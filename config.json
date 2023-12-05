@@ -1,0 +1,8 @@
+{
+    "params":
+    {
+        "local_server":"True",
+        "local_uri":"mysql+pymysql://python_blog:python_blog@localhost/python_blog",
+        "prod_uri":"mysql+pymysql://python_blog:python_blog@localhost/python_blog"
+    }
+}

@@ -1,9 +1,17 @@
 import flask
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+import json
 from datetime import datetime
+local_server = True
+
+with open('config.json','r') as c:
+    params = json.load(c)["params"]
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://python_blog:python_blog@localhost/python_blog'
+if(local_server):
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = params['prod_uri']    
 
 db = SQLAlchemy(app)
 
