@@ -3,6 +3,11 @@
     {
         "local_server":"True",
         "local_uri":"mysql+pymysql://python_blog:python_blog@localhost/python_blog",
-        "prod_uri":"mysql+pymysql://python_blog:python_blog@localhost/python_blog"
+        "prod_uri":"mysql+pymysql://python_blog:python_blog@localhost/python_blog",
+        "tw_url":"https://www.linkedin.com/in/pawan-kumar-841205259/",        
+        "gh_url":"https://github.com/Rubipatel1989",
+        "fb_url":"https://www.facebook.com/Rubipatel1989",
+        "gmail_user":"pawankum0010@gmail.com",
+        "gmail_password":"9456604879"
     }
 }

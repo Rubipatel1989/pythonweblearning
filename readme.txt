@@ -3,3 +3,4 @@ https://www.youtube.com/watch?v=DD3ou9sa3Z8&list=PLu0W_9lII9agAiWp6Y41ueUKx1VcTR
 pip install flask
 pip install flask-sqlalchemy
 pip install pymysql
+pip install flask-mail
