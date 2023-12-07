@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import json
@@ -45,11 +45,26 @@ class Posts(db.Model):
 
 @app.route('/')
 def home():
-    return render_template('index.html', params=params)
+    posts = Posts.query.filter_by().all()[0:4]
+    return render_template('index.html', params=params, posts=posts)
 
 @app.route('/about')
 def about():
     return render_template('about.html', params=params)
+
+@app.route('/dashboard',methods=['GET','POST'])
+def dashboard():
+    if request.method == 'POST':
+        #redirect in admin panel
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if(username == params['admin_user'] and password == params['admin_password']):
+            #set the session variables
+            session['username'] = username
+
+    else:
+        return render_template('login.html', params=params)
 
 @app.route('/contact', methods = ['GET', 'POST'])
 def contact():
