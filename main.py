@@ -49,7 +49,7 @@ class Posts(db.Model):
 
 @app.route('/')
 def home():
-    posts = Posts.query.filter_by().all()[0:4]
+    posts = Posts.query.filter_by().all()[0:int(params['no_of_posts'])]
     return render_template('index.html', params=params, posts=posts)
 
 @app.route('/about')
@@ -86,10 +86,9 @@ def edit(id):
             title = request.form.get('title')
             slug = request.form.get('slug')
             content = request.form.get('content')
-            img_file = request.form.get('img_file')
             f = request.files['img_file']
 
-            if id == 0:
+            if id == '0':
                 f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
                 post = Posts(title=title, slug=slug, content=content, img_file = f.filename)
                 db.session.add(post)
@@ -102,7 +101,7 @@ def edit(id):
                 post.content = content
                 post.img_file = f.filename
                 db.session.commit()
-                return redirect('/edit/'+id)
+                return redirect('/edit/' + id)
         post = Posts.query.filter_by(id=id).first()
 
         return render_template('edit.html',params=params, post=post)

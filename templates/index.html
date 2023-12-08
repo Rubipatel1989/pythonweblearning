@@ -33,8 +33,12 @@
                     <!-- Divider-->
                     <hr class="my-4" />
                     {% endfor %}
-                    
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    <div class="clear-fix">
+                    {% if number !=0 %}
+                    <a class="btn btn-primary text-uppercase float-left" href="#!">&lAarr; Newer Posts </a>
+                    {% endif %}
+                    <a class="btn btn-primary text-uppercase float-right" href="#!">Older Posts &rAarr;</a>
+                    </div>
                 </div>
             </div>
         </div>

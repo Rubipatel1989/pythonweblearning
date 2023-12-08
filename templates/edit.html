@@ -25,7 +25,7 @@
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN" action="/edit/{{post.id}}" method="post" enctype="multipart/form-data">
+                <form id="contactForm" action="/edit/{{post.id}}" method="post" enctype="multipart/form-data">
                     <div class="form-floating">
                         <input class="form-control" id="title" name="title" type="text" placeholder="Enter your title..." value="{{post.title}}" />
                         <label for="name">Title</label>
