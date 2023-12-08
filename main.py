@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import json
@@ -11,6 +11,7 @@ with open('config.json','r') as c:
 
 local_server = True
 app = Flask(__name__)
+app.secret_key = 'super-secret-key'
 app.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = '587',
@@ -54,6 +55,13 @@ def about():
 
 @app.route('/dashboard',methods=['GET','POST'])
 def dashboard():
+
+    if ('user' in session and session['user'] == params['admin_user']):
+        posts = Posts.query.all()
+        return render_template('dashboard.html', params=params, posts = posts)
+   ##else:
+        ##return render_template('login.html', params=params)
+
     if request.method == 'POST':
         #redirect in admin panel
         username = request.form.get('username')
@@ -61,10 +69,37 @@ def dashboard():
 
         if(username == params['admin_user'] and password == params['admin_password']):
             #set the session variables
-            session['username'] = username
+            session['user'] = username
+            posts = Posts.query.all()
+            return render_template('dashboard.html', params=params, posts = posts)
 
     else:
         return render_template('login.html', params=params)
+
+@app.route('/edit/<string:id>', methods = ['GET', 'POST'])
+def edit(id):
+    if ('user' in session and session['user'] == params['admin_user']):
+        if request.method == 'POST':
+            title = request.form.get('title')
+            slug = request.form.get('slug')
+            content = request.form.get('content')
+            img_file = request.form.get('img_file')
+
+            if id == '0':
+                post = Posts(title=title, slug=slug, content=content, img_file=img_file)
+                db.session.add(post)
+                db.session.commit()
+            else:
+                post = Posts.query.filter_by(id=id).first()
+                post.title = title
+                post.slug = slug
+                post.content = content
+                post.img_file = img_file
+                db.session.commit()
+                return redirect('/edit/'+id)
+        post = Posts.query.filter_by(id=id).first()
+
+        return render_template('edit.html',params=params, post=post)
 
 @app.route('/contact', methods = ['GET', 'POST'])
 def contact():

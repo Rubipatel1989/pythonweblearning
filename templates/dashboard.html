@@ -1,0 +1,58 @@
+{% extends  "layout.html" %}
+{% block body %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{ url_for('static', filename='assets/img/home-bg.jpg') }} ')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Welcome in admin panel</h1>
+                            <span class="subheading">Edit your post</span>
+                        </div>
+                        <div class="site-heading">
+                            Add New Post
+                            <button class="btn btn-primary"><a href="/edit/0">Add New Post</a></button>
+                            <button class="btn btn-primary"><a href="/logout">Logout</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div>
+            <label>Upload File</label>
+            <input type="file">
+        </div>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-12 col-lg-8 col-xl-7">
+                    <!-- Post preview-->
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for posts in posts %}
+                          <tr>
+                            <th scope="row">{{posts.id}}</th>
+                            <td>{{posts.title}}</td>
+                            <td>{{posts.date}}</td>
+                            <td><a href="/edit/{{posts.id}}"><button class="btn btn-primary">Edit</button></a></td>
+                            <td><a href="/delete/{{posts.id}}"></a><button class="btn btn-primary">Delete</button></a></td>
+                          </tr>
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+      
+
+{% endblock %}
