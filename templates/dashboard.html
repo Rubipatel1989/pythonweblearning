@@ -18,10 +18,6 @@
                 </div>
             </div>
         </header>
-        <div>
-            <label>Upload File</label>
-            <input type="file">
-        </div>
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -44,7 +40,7 @@
                             <td>{{posts.title}}</td>
                             <td>{{posts.date}}</td>
                             <td><a href="/edit/{{posts.id}}"><button class="btn btn-primary">Edit</button></a></td>
-                            <td><a href="/delete/{{posts.id}}"></a><button class="btn btn-primary">Delete</button></a></td>
+                            <td><a href="/delete/{{posts.id}}"><button class="btn btn-primary">Delete</button></a></td>
                           </tr>
                           {% endfor %}
                           

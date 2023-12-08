@@ -1,8 +1,10 @@
 import flask
 from flask import Flask, render_template, request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 from flask_mail import Mail
 import json
+import os
 from datetime import datetime
 
 
@@ -12,6 +14,7 @@ with open('config.json','r') as c:
 local_server = True
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
+app.config['UPLOAD_FOLDER'] = params['upload_location']
 app.config.update(
     MAIL_SERVER = 'smtp.gmail.com',
     MAIL_PORT = '587',
@@ -84,22 +87,34 @@ def edit(id):
             slug = request.form.get('slug')
             content = request.form.get('content')
             img_file = request.form.get('img_file')
+            f = request.files['img_file']
 
-            if id == '0':
-                post = Posts(title=title, slug=slug, content=content, img_file=img_file)
+            if id == 0:
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
+                post = Posts(title=title, slug=slug, content=content, img_file = f.filename)
                 db.session.add(post)
                 db.session.commit()
             else:
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
                 post = Posts.query.filter_by(id=id).first()
                 post.title = title
                 post.slug = slug
                 post.content = content
-                post.img_file = img_file
+                post.img_file = f.filename
                 db.session.commit()
                 return redirect('/edit/'+id)
         post = Posts.query.filter_by(id=id).first()
 
         return render_template('edit.html',params=params, post=post)
+    
+@app.route('/delete/<string:id>', methods = ['GET', 'POST'])
+def delete(id):
+    if ('user' in session and session['user'] == params['admin_user']):
+        post = Posts.query.filter_by(id=id).first()
+        db.session.delete(post)
+        db.session.commit()
+        return redirect('/dashboard')
+
 
 @app.route('/contact', methods = ['GET', 'POST'])
 def contact():
@@ -122,5 +137,10 @@ def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first()
 
     return render_template('post.html', params=params, post=post)
+
+@app.route('/logout')
+def logout():
+    session.pop('user')
+    return redirect('/dashboard')
 
 app.run(debug=True)
